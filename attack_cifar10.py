@@ -85,7 +85,7 @@ if __name__ == '__main__':
         
 
         config_file = config_path_join(_cf)
-        tf.reset_default_graph()
+        tf.compat.v1.reset_default_graph()
 
         with open(config_file) as config_file:
             config = json.load(config_file)
