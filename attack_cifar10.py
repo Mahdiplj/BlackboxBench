@@ -52,22 +52,22 @@ from utils.model_loader import load_torch_models, load_torch_models_imagesub
 from utils.compute import tf_nsign, sign, linf_proj_maker, l2_proj_maker
 
 from attacks.score.nes_attack import NESAttack
-from attacks.score.bandit_attack import BanditAttack
-from attacks.score.zo_sign_sgd_attack import ZOSignSGDAttack
-from attacks.score.sign_attack import SignAttack
-from attacks.score.simple_attack import SimpleAttack
-from attacks.score.square_attack import SquareAttack
-from attacks.score.parsimonious_attack import ParsimoniousAttack
-from attacks.score.dpd_attack import DPDAttack
+# from attacks.score.bandit_attack import BanditAttack
+# from attacks.score.zo_sign_sgd_attack import ZOSignSGDAttack
+# from attacks.score.sign_attack import SignAttack
+# from attacks.score.simple_attack import SimpleAttack
+# from attacks.score.square_attack import SquareAttack
+# from attacks.score.parsimonious_attack import ParsimoniousAttack
+# from attacks.score.dpd_attack import DPDAttack
 
-from attacks.decision.sign_opt_attack import SignOPTAttack
-from attacks.decision.hsja_attack import HSJAttack
-from attacks.decision.geoda_attack import GeoDAttack
-from attacks.decision.opt_attack import OptAttack
-from attacks.decision.evo_attack import EvolutionaryAttack
-from attacks.decision.sign_flip_attack import SignFlipAttack
-from attacks.decision.rays_attack import RaySAttack
-from attacks.decision.boundary_attack import BoundaryAttack
+# from attacks.decision.sign_opt_attack import SignOPTAttack
+# from attacks.decision.hsja_attack import HSJAttack
+# from attacks.decision.geoda_attack import GeoDAttack
+# from attacks.decision.opt_attack import OptAttack
+# from attacks.decision.evo_attack import EvolutionaryAttack
+# from attacks.decision.sign_flip_attack import SignFlipAttack
+# from attacks.decision.rays_attack import RaySAttack
+# from attacks.decision.boundary_attack import BoundaryAttack
 
 if __name__ == '__main__':
     config = os.sys.argv[1]
