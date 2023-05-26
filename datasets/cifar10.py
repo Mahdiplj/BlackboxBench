@@ -48,6 +48,8 @@ class CIFAR10Data(object):
         train_images = np.zeros((50000, 32, 32, 3), dtype='uint8')
         train_labels = np.zeros(50000, dtype='int32')
         for ii, fname in enumerate(train_filenames):
+            print(path)
+            print(fname)
             cur_images, cur_labels = self._load_datafile(os.path.join(path, fname))
             train_images[ii * 10000: (ii + 1) * 10000, ...] = cur_images
             train_labels[ii * 10000: (ii + 1) * 10000, ...] = cur_labels
