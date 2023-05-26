@@ -28,6 +28,18 @@ def load_torch_models(model_name):
         with open(os.path.join(TRAINED_MODEL_PATH, 'config.json')) as fr:
             pretrained_model = pyramidnet.Network(json.load(fr)['model_config'])
             pretrained_model.load_state_dict(torch.load(os.path.join(TRAINED_MODEL_PATH, filename))['state_dict'])
+    
+#####################################################################################
+    elif model_name == 'std':
+        TRAINED_MODEL_PATH = data_path_join('pretrained_models/std/')
+        filename = 'std.pth'
+        pretrained_model = resnet()
+        pretrained_model = torch.nn.DataParallel(pretrained_model)
+        checkpoint = torch.load(os.path.join(TRAINED_MODEL_PATH, filename))
+        # if hasattr(pretrained_model, 'module'):
+        #     pretrained_model = pretrained_model.module
+        pretrained_model.load_state_dict(checkpoint['net'])
+
     elif model_name == 'resnet_adv_4':
         TRAINED_MODEL_PATH = data_path_join('pretrained_models/resnet_adv_4/cifar-10_linf/')
         filename = 'model_best_state.pth'

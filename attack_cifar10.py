@@ -1,3 +1,7 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 '''
 This file is copied from the following source:
 link: https://github.com/ash-aldujaili/blackbox-adv-examples-signhunter/blob/master/src/attacks/blackbox/run.attack.py
@@ -25,10 +29,6 @@ basic structure for main:
 """
 Script for running black-box attacks
 """
-
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 import json
 import math
