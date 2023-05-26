@@ -44,7 +44,7 @@ import tensorflow as tf
 import torch
 
 import sys
-sys.path.append('../..')
+sys.path.append('/..')
 from datasets.dataset import Dataset
 from utils.compute import tf_nsign, sign
 from utils.misc import config_path_join, src_path_join, create_dir, get_dataset_shape
