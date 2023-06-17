@@ -14,7 +14,6 @@ sign4bb-venv/
 .Python
 env/
 build/
-data/
 blackbox_attack_exp/
 develop-eggs/
 dist/
