@@ -1,0 +1,27 @@
+{
+    "cifar10": [
+        {
+            "average_num_extra_queries": 2023.8607863974496,
+            "average_num_loss_queries": 2932.3900106269925,
+            "average_num_queries": 4956.250797024442,
+            "config": {
+                "attack_name": "SimpleAttack",
+                "delta": 2,
+                "epsilon": 12.75,
+                "lb": 0.0,
+                "max_extra_queries": "inf",
+                "max_loss_queries": 10000,
+                "name": "SimBA",
+                "p": "inf",
+                "ub": 255.0
+            },
+            "failure_rate": 0.01671891327063741,
+            "median_num_loss_queries": 2513.0,
+            "total_extra_queries": 1904453,
+            "total_failures": 16,
+            "total_loss_queries": 2759379,
+            "total_queries": 4663832,
+            "total_successes": 941
+        }
+    ]
+}

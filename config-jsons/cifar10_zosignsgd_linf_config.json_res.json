@@ -1,0 +1,29 @@
+{
+    "cifar10": [
+        {
+            "average_num_extra_queries": 11.588235294117647,
+            "average_num_loss_queries": 359.2352941176471,
+            "average_num_queries": 370.8235294117647,
+            "config": {
+                "attack_name": "ZOSignSGDAttack",
+                "epsilon": 12.75,
+                "fd_eta": 2.55,
+                "lb": 0.0,
+                "lr": 4,
+                "max_extra_queries": "inf",
+                "max_loss_queries": 10000,
+                "name": "zosignsgd",
+                "p": "inf",
+                "q": 30,
+                "ub": 255.0
+            },
+            "failure_rate": 0.05456453305351522,
+            "median_num_loss_queries": 124.0,
+            "total_extra_queries": 10441,
+            "total_failures": 52,
+            "total_loss_queries": 323671,
+            "total_queries": 334112,
+            "total_successes": 901
+        }
+    ]
+}

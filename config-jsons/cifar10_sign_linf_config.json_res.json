@@ -1,0 +1,27 @@
+{
+    "cifar10": [
+        {
+            "average_num_extra_queries": 105.07660020986359,
+            "average_num_loss_queries": 108.07660020986359,
+            "average_num_queries": 213.15320041972717,
+            "config": {
+                "attack_name": "SignAttack",
+                "epsilon": 12.75,
+                "fd_eta": 12.75,
+                "lb": 0.0,
+                "max_extra_queries": "inf",
+                "max_loss_queries": 10000,
+                "name": "Sign",
+                "p": "inf",
+                "ub": 255.0
+            },
+            "failure_rate": 0.0,
+            "median_num_loss_queries": 56.0,
+            "total_extra_queries": 100138,
+            "total_failures": 0,
+            "total_loss_queries": 102997,
+            "total_queries": 203135,
+            "total_successes": 953
+        }
+    ]
+}

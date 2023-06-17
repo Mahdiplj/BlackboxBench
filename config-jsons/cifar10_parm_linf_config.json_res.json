@@ -1,0 +1,26 @@
+{
+    "cifar10": [
+        {
+            "average_num_extra_queries": 1.1713688610240334,
+            "average_num_loss_queries": 275.13270637408567,
+            "average_num_queries": 276.30407523510974,
+            "config": {
+                "attack_name": "ParsimoniousAttack",
+                "epsilon": 12.75,
+                "lb": 0.0,
+                "max_extra_queries": "inf",
+                "max_loss_queries": 10000,
+                "name": "ECO",
+                "p": "inf",
+                "ub": 255.0
+            },
+            "failure_rate": 0.0,
+            "median_num_loss_queries": 191.0,
+            "total_extra_queries": 1121,
+            "total_failures": 0,
+            "total_loss_queries": 263302,
+            "total_queries": 264423,
+            "total_successes": 957
+        }
+    ]
+}

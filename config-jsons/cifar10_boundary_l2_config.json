@@ -3,7 +3,7 @@
   "dset_name": "cifar10",
   "dset_config": {},
   "_comment2": "===== EVAL CONFIGURATION =====",
-  "num_eval_examples": 10000,
+  "num_eval_examples": 1000,
   "_comment3": "=====ADVERSARIAL EXAMPLES CONFIGURATION=====",
   "attack_name": "BoundaryAttack",
   "attack_config": {
@@ -19,7 +19,7 @@
     "update_stats_every_k": 10
   },
   "device": "gpu",
-  "modeln": "wrn28",
+  "modeln": "myresnet",
   "target": false,
   "target_type": "median",
   "seed": 123

@@ -69,13 +69,15 @@ class NESAttack(ScoreBlackBoxAttack):
         _shape = list(xs_t.shape)
         dim = np.prod(_shape[1:])
         num_axes = len(_shape[1:])
-        gs_t = torch.zeros_like(xs_t)
+        gs_t = torch.zeros_like(xs_t).to(torch.device('cuda'))
         for _ in range(self.q):
             # exp_noise = torch.randn_like(xs_t) / (dim ** 0.5)
-            exp_noise = torch.randn_like(xs_t)
+            exp_noise = torch.randn_like(xs_t).to(torch.device('cuda'))
+            xs_t = xs_t.to(torch.device('cuda'))
             fxs_t = xs_t + self.fd_eta * exp_noise
             bxs_t = xs_t - self.fd_eta * exp_noise
             est_deriv = (loss_fct(fxs_t) - loss_fct(bxs_t)) / (4. * self.fd_eta)
+            est_deriv = est_deriv.to(torch.device('cuda'))
             gs_t += t(est_deriv.reshape(-1, *[1] * num_axes)) * exp_noise
         # perform the step
         new_xs = lp_step(xs_t, gs_t, self.lr, self.p)

@@ -10,12 +10,25 @@ from utils.misc import data_path_join
 # from utils_.utils import RecorderMeter
 # from utils_ import utils
 # from models import resnet_preact, resnet, pyramidnet, wrn, vgg, densenet, wrn_adv
-from models import resnet_preact, resnet, wrn, vgg, densenet
+from models import resnet_preact, resnet, wrn, vgg, densenet, myResnet, rn
 # , wrn_sap, wrn_adv_sap, model_zoo, vgg_rse, pni_model
 # from models.Resnet import resnet152_denoise, resnet101_denoise
 import numpy as np
 from torchvision import models, datasets
-
+###################################################################
+import copy
+def models(model):
+  if torch.rand(1).item() > 1:
+    return model
+  else:
+    new_model = copy.deepcopy(model)
+    params = new_model.parameters()
+    with torch.no_grad():
+      for param in params:
+        new_param = param + 0.005 * torch.randn_like(param)
+        param.copy_(new_param)
+    return new_model
+########################################################################
 def load_torch_models(model_name):
 
     if torch.cuda.is_available():
@@ -33,14 +46,40 @@ def load_torch_models(model_name):
 #####################################################################################
     elif model_name == 'std':
         TRAINED_MODEL_PATH = data_path_join('pretrained_models/std/')
-        filename = 'std.pth'
-        pretrained_model = resnet()
-        pretrained_model = torch.nn.DataParallel(pretrained_model)
+        filename = 'std'
+        pretrained_model = myResnet.ResNet18()
+        # pretrained_model = torch.nn.DataParallel(pretrained_model)
+        ##############################################################################
+        TRAINED_MODEL_PATH = "/content/drive/MyDrive/Github/BlackboxBench/data/pretrained_models"
         checkpoint = torch.load(os.path.join(TRAINED_MODEL_PATH, filename))
         # if hasattr(pretrained_model, 'module'):
         #     pretrained_model = pretrained_model.module
+        pretrained_model.load_state_dict(checkpoint)
+######################################################################################################
+    elif model_name == 'myresnet':
+        # TRAINED_MODEL_PATH = data_path_join('pretrained_models/myresnet/')
+        # filename = 'Cifar10ResNet18WithoutNormalization_95.53.pth'
+        pretrained_model = rn.ResNet18()
+        pretrained_model = torch.nn.DataParallel(pretrained_model)
+        ##############################################################################
+        # TRAINED_MODEL_PATH = "/content/drive/MyDrive/Github/BlackboxBench/data/pretrained_models"
+        checkpoint = torch.load("/content/drive/MyDrive/Github/BlackboxBench/data/pretrained_models/Cifar10ResNet18WithoutNormalization_95.53.pth")
+        # if hasattr(pretrained_model, 'module'):
+        #     pretrained_model = pretrained_model.module
         pretrained_model.load_state_dict(checkpoint['net'])
-
+#######################################################################################################
+    elif model_name == 'myresnetnormal':
+        # TRAINED_MODEL_PATH = data_path_join('pretrained_models/myresnet/')
+        # filename = 'Cifar10ResNet18WithoutNormalization_95.53.pth'
+        pretrained_model = rn.ResNet18()
+        pretrained_model = torch.nn.DataParallel(pretrained_model)
+        ##############################################################################
+        # TRAINED_MODEL_PATH = "/content/drive/MyDrive/Github/BlackboxBench/data/pretrained_models"
+        checkpoint = torch.load("/content/drive/MyDrive/Github/BlackboxBench/data/pretrained_models/Cifar10ResNet18WithNormalization_95.61.pth")
+        # if hasattr(pretrained_model, 'module'):
+        #     pretrained_model = pretrained_model.module
+        pretrained_model.load_state_dict(checkpoint['net'])
+ #######################################################################################################       
     elif model_name == 'resnet_adv_4':
         TRAINED_MODEL_PATH = data_path_join('pretrained_models/resnet_adv_4/cifar-10_linf/')
         filename = 'model_best_state.pth'
@@ -272,8 +311,8 @@ def load_torch_models(model_name):
         net = pretrained_model
 
     elif 'wrn28' in model_name:
-        mean = np.array([0.4914, 0.4822, 0.4465])
-        std = np.array([0.2023, 0.1994, 0.2010])
+        mean = torch.tensor(np.array([0.4914, 0.4822, 0.4465])).cuda()
+        std = torch.tensor(np.array([0.2023, 0.1994, 0.2010])).cuda()
 
         # std = np.array([0.2470, 0.2435, 0.2616])
         normalize = NormalizeByChannelMeanStd(
@@ -283,21 +322,43 @@ def load_torch_models(model_name):
             normalize,
             pretrained_model
         )
-
-    else:
-        mean = np.array([0.4914, 0.4822, 0.4465])
-        std = np.array([0.2470, 0.2435, 0.2616])
+    
+    #############################################################
+    elif "myresnetnormal" in model_name:
+        mean = torch.tensor(np.array([0.4914, 0.4822, 0.4465])).cuda()
+        std = torch.tensor(np.array([0.2023, 0.1994, 0.2010])).cuda()
 
         normalize = NormalizeByChannelMeanStd(
-                mean=mean.tolist(), std=std.tolist())
+          mean=mean.tolist(), std=std.tolist()
+        )
 
         net = nn.Sequential(
-            normalize,
+          normalize,
+          pretrained_model
+        )
+    #############################################################
+
+    else:
+        #mean = np.array([0.4914, 0.4822, 0.4465])
+        ###################################################
+        # std = np.array([0.2470, 0.2435, 0.2616])
+        #std = np.array([0.2023, 0.1994, 0.2010])
+        ###################################################
+        #normalize = NormalizeByChannelMeanStd(
+        #        mean=mean.tolist(), std=std.tolist())
+
+        net = nn.Sequential(
+            #normalize,
             pretrained_model
         )
 
+        # net = nn.Sequential(pretrained_model)
+
     if torch.cuda.is_available():
         net = net.cuda()
+    # random_net = models(net)
+    # random_net.eval()
+    # return random_net
     net.eval()
     return net
 

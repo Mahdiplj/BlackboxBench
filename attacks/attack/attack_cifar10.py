@@ -51,44 +51,52 @@ from utils.misc import config_path_join, src_path_join, create_dir, get_dataset_
 from utils.model_loader import load_torch_models, load_torch_models_imagesub
 from utils.compute import tf_nsign, sign, linf_proj_maker, l2_proj_maker
 
-from attacks.score.nes_attack import NESAttack
-from attacks.score.bandit_attack import BanditAttack
-from attacks.score.zo_sign_sgd_attack import ZOSignSGDAttack
-from attacks.score.sign_attack import SignAttack
-from attacks.score.simple_attack import SimpleAttack
+# from attacks.score.nes_attack import NESAttack
+# from attacks.score.bandit_attack import BanditAttack
+# from attacks.score.zo_sign_sgd_attack import ZOSignSGDAttack
+# from attacks.score.sign_attack import SignAttack
+# from attacks.score.simple_attack import SimpleAttack
 from attacks.score.square_attack import SquareAttack
-from attacks.score.parsimonious_attack import ParsimoniousAttack
-from attacks.score.dpd_attack import DPDAttack
+# from attacks.score.parsimonious_attack import ParsimoniousAttack
+# from attacks.score.dpd_attack import DPDAttack
 
 from attacks.decision.sign_opt_attack import SignOPTAttack
 from attacks.decision.hsja_attack import HSJAttack
 from attacks.decision.geoda_attack import GeoDAttack
-from attacks.decision.opt_attack import OptAttack
-from attacks.decision.evo_attack import EvolutionaryAttack
-from attacks.decision.sign_flip_attack import SignFlipAttack
+# from attacks.decision.opt_attack import OptAttack
+# from attacks.decision.evo_attack import EvolutionaryAttack
+# from attacks.decision.sign_flip_attack import SignFlipAttack
 from attacks.decision.rays_attack import RaySAttack
 from attacks.decision.boundary_attack import BoundaryAttack
 
 if __name__ == '__main__':
-    config = os.sys.argv[1]
-    exp_id = config.split('/')[-1]
-    print("Running Experiment {}".format(exp_id))
+    # config = os.sys.argv[1]
+    # exp_id = config.split('/')[-1]
+    # print("Running Experiment {}".format(exp_id))
 
     # create/ allocate the result json for tabulation
     data_dir = src_path_join('blackbox_attack_exp')
     create_dir(data_dir)
     res = {}
-    cfs = [config]
+    # cfs = [config]
+    cfs = ["/content/drive/MyDrive/Github/BlackboxBench/config-jsons/cifar10_geoda_linf_config.json",
+    "/content/drive/MyDrive/Github/BlackboxBench/config-jsons/cifar10_rays_linf_config.json"]
+
+    # print(cfs)
 
 
     for _cf in cfs:
         
-
+    
         config_file = config_path_join(_cf)
-        tf.reset_default_graph()
+        # tf.reset_default_graph()
+        tf.compat.v1.reset_default_graph()
 
         with open(config_file) as config_file:
             config = json.load(config_file)
+
+
+
         # for reproducibility
         seed = config['seed']
         np.random.seed(seed)
@@ -96,12 +104,12 @@ if __name__ == '__main__':
         torch.cuda.manual_seed(seed)
 
         dset = Dataset(config['dset_name'], config)
-
         model_name = config['modeln']
         if config['dset_name'] == 'imagenet':
             model = load_torch_models_imagesub(model_name)
         else:
             model = load_torch_models(model_name)
+
 
         print('The Black-Box model: {}'.format(config['modeln']))
 
@@ -188,6 +196,9 @@ if __name__ == '__main__':
             start_time = time.time()
 
             for ibatch in range(num_batches):
+                ####################################
+                # model = load_torch_models(model_name)
+                ####################################
                 bstart = ibatch * eval_batch_size
                 bend = min(bstart + eval_batch_size, num_eval_examples)
                 print('batch size: {}: ({}, {})'.format(bend - bstart, bstart, bend))
@@ -202,7 +213,7 @@ if __name__ == '__main__':
                     proj_2 = l2_proj_maker(x_ori, epsilon)
 
                 def get_label(target_type):
-                    _, logit = model(torch.FloatTensor(x_batch.transpose(0,3,1,2) / 255.))
+                    logit = model(torch.FloatTensor(x_batch.transpose(0,3,1,2) / 255.).cuda()).cuda()
                     if target_type == 'random':
                         label = torch.randint(low=0, high=logit.shape[1], size=label.shape).long().cuda()
                     elif target_type == 'least_likely':
@@ -211,6 +222,7 @@ if __name__ == '__main__':
                         label = torch.argsort(logit, dim=1,descending=True)[:,1]
                     elif target_type == 'median':
                         label = torch.argsort(logit, dim=1,descending=True)[:,4]
+                        
                     elif 'label' in target_type:
                         label = torch.ones_like(y_batch) * int(target_type[5:])
                     return label.detach()
@@ -241,7 +253,7 @@ if __name__ == '__main__':
                         #---------------------#
                         x_eval = x_eval + sigma * torch.randn_like(x_eval)
                         x_eval = torch.clamp(x_eval, 0, 1)
-                        _, y_logit = model(x_eval.cuda())
+                        y_logit = model(x_eval.cuda())
                         loss = criterion(y_logit, y_batch, target)
                         if es:
                             y_logit = y_logit.detach()
@@ -266,7 +278,7 @@ if __name__ == '__main__':
                         #---------------------#
                         x_eval = x_eval + sigma * torch.randn_like(x_eval)
                         x_eval = torch.clamp(x_eval, 0, 1)
-                        _, y_logit = model(x_eval.cuda())
+                        y_logit = model(x_eval.cuda())
                         y_logit = y_logit.detach()
                         correct = torch.argmax(y_logit, axis=1) == y_batch
                         # expect_num = 10

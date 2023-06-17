@@ -108,8 +108,10 @@ class ScoreBlackBoxAttack(object):
         raise NotImplementedError
 
     def proj_replace(self, xs_t, sugg_xs_t, dones_mask_t):
-        sugg_xs_t = self._proj(sugg_xs_t)
+        sugg_xs_t = self._proj(sugg_xs_t.to(torch.device('cuda'))).to(torch.device('cuda'))
         # replace xs only if not done
+        xs_t = xs_t.to(torch.device('cuda'))
+        dones_mask_t = dones_mask_t.to(torch.device('cuda'))
         xs_t = sugg_xs_t * (1. - dones_mask_t) + xs_t * dones_mask_t
         return xs_t
 
@@ -182,9 +184,14 @@ class ScoreBlackBoxAttack(object):
             xs_t = self.proj_replace(xs_t, sugg_xs_t, (dones_mask.reshape(-1, *[1] * num_axes).float()))
 
             # update number of queries (note this is done before updating dones_mask)
+            num_loss_queries = num_loss_queries.to(torch.device('cuda'))
+            # num_loss_queries_per_step = num_loss_queries_per_step.to(torch.device('cuda'))
+            num_loss_queries_per_step = num_loss_queries_per_step
+            num_extra_queries = num_extra_queries.to(torch.device('cuda'))
+
             num_loss_queries += num_loss_queries_per_step * (~dones_mask)
             num_extra_queries += (~dones_mask)
-            losses = loss_fct(xs_t) * (~dones_mask) + losses * dones_mask
+            losses = loss_fct(xs_t).to(torch.device('cuda')) * (~dones_mask) + losses.to(torch.device('cuda')) * dones_mask
 
             # update dones mask
             dones_mask = dones_mask | early_stop_extra_fct(xs_t)
@@ -204,7 +211,6 @@ class ScoreBlackBoxAttack(object):
                     "failures : ", ((~dones_mask) * correct_classified_mask).sum().item()  / float(success_mask.shape[0]))
                 sys.stdout.flush()
             
-
 
         success_mask = dones_mask * correct_classified_mask
         self.total_loss_queries += (num_loss_queries * success_mask).sum()

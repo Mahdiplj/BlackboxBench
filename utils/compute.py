@@ -146,9 +146,10 @@ def linf_proj_maker(xs, eps):
     :return:
     """
     if ch.is_tensor(xs):
-        orig_xs = xs.clone()
+        orig_xs = xs.clone().to(ch.device('cuda'))
 
         def proj(new_xs):
+            new_xs = new_xs.to(ch.device('cuda'))
             return orig_xs + ch.clamp(new_xs - orig_xs, - eps, eps)
     else:
         orig_xs = xs.copy()

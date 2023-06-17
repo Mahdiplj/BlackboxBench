@@ -1,3 +1,6 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 '''
 
 This file is copied from the following source:
@@ -25,9 +28,7 @@ basic structure for main:
 """
 Implements the base class for decision-based black-box attacks
 """
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+
 
 import numpy as np
 import torch
@@ -116,7 +117,8 @@ class DecisionBlackBoxAttack(object):
         x_eval = torch.clamp(x_eval, 0, 1)
         x_eval = x_eval + self.sigma * torch.randn_like(x_eval)
         if self.ub == 255:
-            out = self.model(x_eval)[1]
+            # out = self.model(x_eval)[1]
+            out = self.model(x_eval)
         else:
             out = self.model(x_eval)
         l = out.argmax(dim=1)

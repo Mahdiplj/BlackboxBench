@@ -1,0 +1,25 @@
+{
+    "cifar10": [
+        {
+            "average_num_extra_queries": 67.36332894984031,
+            "average_num_loss_queries": 68.36332894984031,
+            "average_num_queries": 135.72665789968062,
+            "config": {
+                "attack_name": "SquareAttack",
+                "epsilon": 12.75,
+                "lb": 0.0,
+                "max_extra_queries": "inf",
+                "max_loss_queries": 10000,
+                "p": "inf",
+                "ub": 255.0
+            },
+            "failure_rate": 0.0,
+            "median_num_loss_queries": 23.0,
+            "total_extra_queries": 358575,
+            "total_failures": 0,
+            "total_loss_queries": 363898,
+            "total_queries": 722473,
+            "total_successes": 5323
+        }
+    ]
+}

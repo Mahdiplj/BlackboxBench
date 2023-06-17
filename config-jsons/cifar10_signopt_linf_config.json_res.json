@@ -1,0 +1,19 @@
+{
+    "cifar10": [
+        {
+            "average_num_queries": 1927.5278969957083,
+            "config": {
+                "attack_name": "SignOPTAttack",
+                "epsilon": 0.05,
+                "lb": 0.0,
+                "p": "inf",
+                "ub": 255.0
+            },
+            "failure_rate": 0.03319502074688797,
+            "median_num_loss_queries": 1707.0,
+            "total_failures": 32,
+            "total_queries": 1796456,
+            "total_successes": 932
+        }
+    ]
+}

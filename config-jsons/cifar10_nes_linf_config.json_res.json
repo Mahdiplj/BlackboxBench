@@ -1,0 +1,79 @@
+{
+    "cifar10": [
+        {
+            "average_num_extra_queries": 1.1713688610240334,
+            "average_num_loss_queries": 275.13270637408567,
+            "average_num_queries": 276.30407523510974,
+            "config": {
+                "attack_name": "ParsimoniousAttack",
+                "epsilon": 12.75,
+                "lb": 0.0,
+                "max_extra_queries": "inf",
+                "max_loss_queries": 10000,
+                "name": "ECO",
+                "p": "inf",
+                "ub": 255.0
+            },
+            "failure_rate": 0.0,
+            "median_num_loss_queries": 191.0,
+            "total_extra_queries": 1121,
+            "total_failures": 0,
+            "total_loss_queries": 263302,
+            "total_queries": 264423,
+            "total_successes": 957
+        },
+        {
+            "average_num_extra_queries": 74.6614420062696,
+            "average_num_loss_queries": 149.3228840125392,
+            "average_num_queries": 223.9843260188088,
+            "config": {
+                "attack_name": "BanditAttack",
+                "data_size": 32,
+                "epsilon": 12.75,
+                "fd_eta": 2.55,
+                "lb": 0.0,
+                "lr": 4,
+                "max_extra_queries": "inf",
+                "max_loss_queries": 10000,
+                "name": "Bandit",
+                "p": "inf",
+                "prior_exploration": 0.1,
+                "prior_lr": 0.1,
+                "prior_size": 20,
+                "ub": 255.0
+            },
+            "failure_rate": 0.0,
+            "median_num_loss_queries": 54.0,
+            "total_extra_queries": 71451,
+            "total_failures": 0,
+            "total_loss_queries": 142902,
+            "total_queries": 214353,
+            "total_successes": 957
+        },
+        {
+            "average_num_extra_queries": 5.927368421052631,
+            "average_num_loss_queries": 355.6421052631579,
+            "average_num_queries": 361.56947368421055,
+            "config": {
+                "attack_name": "NESAttack",
+                "epsilon": 12,
+                "fd_eta": 2.55,
+                "lb": 0.0,
+                "lr": 4,
+                "max_extra_queries": "inf",
+                "max_loss_queries": 10000,
+                "name": "NES",
+                "p": "inf",
+                "q": 30,
+                "ub": 255.0
+            },
+            "failure_rate": 0.0073145245559038665,
+            "median_num_loss_queries": 240.0,
+            "total_extra_queries": 5631,
+            "total_failures": 7,
+            "total_loss_queries": 337860,
+            "total_queries": 343491,
+            "total_successes": 950
+        }
+    ]
+}

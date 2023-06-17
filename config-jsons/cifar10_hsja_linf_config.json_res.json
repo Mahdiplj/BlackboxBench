@@ -1,0 +1,19 @@
+{
+    "cifar10": [
+        {
+            "average_num_queries": 772.5880503144654,
+            "config": {
+                "attack_name": "HSJAttack",
+                "epsilon": 0.05,
+                "lb": 0.0,
+                "p": "inf",
+                "ub": 255.0
+            },
+            "failure_rate": 0.003134796238244514,
+            "median_num_loss_queries": 749.0,
+            "total_failures": 3,
+            "total_queries": 737049,
+            "total_successes": 954
+        }
+    ]
+}

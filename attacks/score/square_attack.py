@@ -1,3 +1,6 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 '''
 
 This file is copied from the following source:
@@ -23,9 +26,7 @@ basic structure for main:
 """
 Implements Square attacks
 """
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+
 
 import numpy as np
 from torch import Tensor as t

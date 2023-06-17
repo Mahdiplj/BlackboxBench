@@ -14,7 +14,7 @@
     "sub": 2
   },
   "device": "gpu",
-  "modeln": "wrn28",
+  "modeln": "myresnetnormal",
   "target": false,
   "target_type": "median",
   "seed": 123
