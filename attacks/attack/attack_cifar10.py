@@ -39,33 +39,33 @@ sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), ".."))
 
 import numpy as np
 import pandas as pd
-import tensorflow as tf
+# import tensorflow as tf
 # import torch as ch
 import torch
 
 import sys
 sys.path.append('../..')
 from datasets.dataset import Dataset
-from utils.compute import tf_nsign, sign
+# from utils.compute import tf_nsign, sign
 from utils.misc import config_path_join, src_path_join, create_dir, get_dataset_shape
 from utils.model_loader import load_torch_models, load_torch_models_imagesub
 from utils.compute import tf_nsign, sign, linf_proj_maker, l2_proj_maker
 
-# from attacks.score.nes_attack import NESAttack
-# from attacks.score.bandit_attack import BanditAttack
-# from attacks.score.zo_sign_sgd_attack import ZOSignSGDAttack
-# from attacks.score.sign_attack import SignAttack
-# from attacks.score.simple_attack import SimpleAttack
+from attacks.score.nes_attack import NESAttack
+from attacks.score.bandit_attack import BanditAttack
+from attacks.score.zo_sign_sgd_attack import ZOSignSGDAttack
+from attacks.score.sign_attack import SignAttack
 from attacks.score.square_attack import SquareAttack
-# from attacks.score.parsimonious_attack import ParsimoniousAttack
+from attacks.score.parsimonious_attack import ParsimoniousAttack
+# from attacks.score.simple_attack import SimpleAttack
 # from attacks.score.dpd_attack import DPDAttack
 
 from attacks.decision.sign_opt_attack import SignOPTAttack
 from attacks.decision.hsja_attack import HSJAttack
 from attacks.decision.geoda_attack import GeoDAttack
-# from attacks.decision.opt_attack import OptAttack
-# from attacks.decision.evo_attack import EvolutionaryAttack
-# from attacks.decision.sign_flip_attack import SignFlipAttack
+from attacks.decision.opt_attack import OptAttack
+from attacks.decision.evo_attack import EvolutionaryAttack
+from attacks.decision.sign_flip_attack import SignFlipAttack
 from attacks.decision.rays_attack import RaySAttack
 from attacks.decision.boundary_attack import BoundaryAttack
 
@@ -79,23 +79,18 @@ if __name__ == '__main__':
     create_dir(data_dir)
     res = {}
     # cfs = [config]
-    cfs = ["/content/drive/MyDrive/Github/BlackboxBench/config-jsons/cifar10_geoda_linf_config.json",
-    "/content/drive/MyDrive/Github/BlackboxBench/config-jsons/cifar10_rays_linf_config.json"]
-
     # print(cfs)
-
-
-    for _cf in cfs:
-        
+################################################################################    
+    cfs = ["/content/drive/MyDrive/Github/BlackboxBench/config-jsons/cifar10_square_linf_config.json"]
+################################################################################    
     
+    for _cf in cfs:
         config_file = config_path_join(_cf)
         # tf.reset_default_graph()
-        tf.compat.v1.reset_default_graph()
+        # tf.compat.v1.reset_default_graph()
 
         with open(config_file) as config_file:
             config = json.load(config_file)
-
-
 
         # for reproducibility
         seed = config['seed']
@@ -196,9 +191,6 @@ if __name__ == '__main__':
             start_time = time.time()
 
             for ibatch in range(num_batches):
-                ####################################
-                # model = load_torch_models(model_name)
-                ####################################
                 bstart = ibatch * eval_batch_size
                 bend = min(bstart + eval_batch_size, num_eval_examples)
                 print('batch size: {}: ({}, {})'.format(bend - bstart, bstart, bend))
@@ -249,10 +241,12 @@ if __name__ == '__main__':
                         x_eval = torch.clamp(x_eval, 0, 1)
                         #---------------------#
                         # sigma = config["sigma"]
-                        sigma = 0
                         #---------------------#
+################################################################################
+                        sigma = 0
                         x_eval = x_eval + sigma * torch.randn_like(x_eval)
                         x_eval = torch.clamp(x_eval, 0, 1)
+################################################################################
                         y_logit = model(x_eval.cuda())
                         loss = criterion(y_logit, y_batch, target)
                         if es:
