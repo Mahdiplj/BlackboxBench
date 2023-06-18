@@ -15,7 +15,7 @@ from models import resnet_preact, resnet, wrn, vgg, densenet, myResnet, rn
 # from models.Resnet import resnet152_denoise, resnet101_denoise
 import numpy as np
 from torchvision import models, datasets
-###################################################################
+########################################################################
 import copy
 def models(model):
   if torch.rand(1).item() > 1:
@@ -42,44 +42,19 @@ def load_torch_models(model_name):
         with open(os.path.join(TRAINED_MODEL_PATH, 'config.json')) as fr:
             pretrained_model = pyramidnet.Network(json.load(fr)['model_config'])
             pretrained_model.load_state_dict(torch.load(os.path.join(TRAINED_MODEL_PATH, filename))['state_dict'])
-    
-#####################################################################################
-    elif model_name == 'std':
-        TRAINED_MODEL_PATH = data_path_join('pretrained_models/std/')
-        filename = 'std'
-        pretrained_model = myResnet.ResNet18()
-        # pretrained_model = torch.nn.DataParallel(pretrained_model)
-        ##############################################################################
-        TRAINED_MODEL_PATH = "/content/drive/MyDrive/Github/BlackboxBench/data/pretrained_models"
-        checkpoint = torch.load(os.path.join(TRAINED_MODEL_PATH, filename))
-        # if hasattr(pretrained_model, 'module'):
-        #     pretrained_model = pretrained_model.module
-        pretrained_model.load_state_dict(checkpoint)
-######################################################################################################
+########################################################################
     elif model_name == 'myresnet':
-        # TRAINED_MODEL_PATH = data_path_join('pretrained_models/myresnet/')
-        # filename = 'Cifar10ResNet18WithoutNormalization_95.53.pth'
         pretrained_model = rn.ResNet18()
         pretrained_model = torch.nn.DataParallel(pretrained_model)
-        ##############################################################################
-        # TRAINED_MODEL_PATH = "/content/drive/MyDrive/Github/BlackboxBench/data/pretrained_models"
         checkpoint = torch.load("/content/drive/MyDrive/Github/BlackboxBench/data/pretrained_models/Cifar10ResNet18WithoutNormalization_95.53.pth")
-        # if hasattr(pretrained_model, 'module'):
-        #     pretrained_model = pretrained_model.module
         pretrained_model.load_state_dict(checkpoint['net'])
-#######################################################################################################
+########################################################################
     elif model_name == 'myresnetnormal':
-        # TRAINED_MODEL_PATH = data_path_join('pretrained_models/myresnet/')
-        # filename = 'Cifar10ResNet18WithoutNormalization_95.53.pth'
         pretrained_model = rn.ResNet18()
         pretrained_model = torch.nn.DataParallel(pretrained_model)
-        ##############################################################################
-        # TRAINED_MODEL_PATH = "/content/drive/MyDrive/Github/BlackboxBench/data/pretrained_models"
         checkpoint = torch.load("/content/drive/MyDrive/Github/BlackboxBench/data/pretrained_models/Cifar10ResNet18WithNormalization_95.61.pth")
-        # if hasattr(pretrained_model, 'module'):
-        #     pretrained_model = pretrained_model.module
         pretrained_model.load_state_dict(checkpoint['net'])
- #######################################################################################################       
+########################################################################     
     elif model_name == 'resnet_adv_4':
         TRAINED_MODEL_PATH = data_path_join('pretrained_models/resnet_adv_4/cifar-10_linf/')
         filename = 'model_best_state.pth'
@@ -323,7 +298,7 @@ def load_torch_models(model_name):
             pretrained_model
         )
     
-    #############################################################
+########################################################################
     elif "myresnetnormal" in model_name:
         mean = torch.tensor(np.array([0.4914, 0.4822, 0.4465])).cuda()
         std = torch.tensor(np.array([0.2023, 0.1994, 0.2010])).cuda()
@@ -336,23 +311,12 @@ def load_torch_models(model_name):
           normalize,
           pretrained_model
         )
-    #############################################################
+########################################################################
 
     else:
-        #mean = np.array([0.4914, 0.4822, 0.4465])
-        ###################################################
-        # std = np.array([0.2470, 0.2435, 0.2616])
-        #std = np.array([0.2023, 0.1994, 0.2010])
-        ###################################################
-        #normalize = NormalizeByChannelMeanStd(
-        #        mean=mean.tolist(), std=std.tolist())
-
         net = nn.Sequential(
-            #normalize,
             pretrained_model
         )
-
-        # net = nn.Sequential(pretrained_model)
 
     if torch.cuda.is_available():
         net = net.cuda()
